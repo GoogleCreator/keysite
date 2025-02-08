@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Display Raw Lua File</title>
     <script>
         // Function to generate a random key
         function generateRandomKey() {
@@ -15,27 +14,36 @@
             return key;
         }
 
-        // Function to display the raw Lua file content
+        // Function to display the raw Lua file content with the key
         function displayLuaFile() {
-            // Generate a random key
-            const randomKey = generateRandomKey();
-            
+            // Check if a key is saved in localStorage
+            let savedKey = localStorage.getItem("dailyKey");
+
+            // If no key is saved or it's time to refresh, generate a new key
+            const now = new Date();
+            const lastUpdated = localStorage.getItem("lastUpdated");
+
+            if (!savedKey || (now - new Date(lastUpdated)) > 120000) { // Check if it's been 2 minutes
+                savedKey = generateRandomKey();
+                localStorage.setItem("dailyKey", savedKey);
+                localStorage.setItem("lastUpdated", now.toString());
+            }
+
             // Format the Lua content as raw text
-            const luaContent = `return {\n    "${randomKey}"\n}`;
-            
+            const luaContent = `return {\n    "${savedKey}"\n}`;
+
             // Display the raw Lua content
             document.getElementById("luaDisplay").innerText = luaContent;
         }
 
-        // Call displayLuaFile on page load and refresh it every 5 minutes
+        // Call displayLuaFile on page load and refresh it every 2 minutes
         window.onload = function() {
             displayLuaFile(); // Display Lua file content on page load
-            setInterval(displayLuaFile, 300000); // Refresh the Lua content every 5 minutes
+            setInterval(displayLuaFile, 120000); // Refresh the Lua content every 2 minutes
         }
     </script>
 </head>
 <body>
-    <h1>Display Raw Lua File</h1>
     <pre id="luaDisplay">The Lua file content will be displayed here.</pre>
 </body>
 </html>
