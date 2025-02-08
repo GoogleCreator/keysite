@@ -16,16 +16,16 @@
 
         // Function to display the raw Lua file content with the key
         function displayLuaFile() {
-            // Check if a key is saved in localStorage
+            // Check if a random key is already saved in localStorage
             let savedKey = localStorage.getItem("sharedKey");
 
             // If no key is saved, generate and store it
             if (!savedKey) {
-                savedKey = generateRandomKey();
-                localStorage.setItem("sharedKey", savedKey);
+                savedKey = generateRandomKey(); // Generate a random key
+                localStorage.setItem("sharedKey", savedKey); // Store it in localStorage
             }
 
-            // Format the Lua content as raw text
+            // Format the Lua content as raw text with the saved (same) random key
             const luaContent = `return {\n    "${savedKey}"\n}`;
 
             // Display the raw Lua content
