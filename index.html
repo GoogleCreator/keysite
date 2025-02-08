@@ -4,39 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>
-        // Generate the key from a shared resource, like localStorage or URL query param
-        function generateSharedKey() {
-            // Example of using a "random" but **consistent key**
+        // Function to generate the universal key based on the current time
+        function generateUniversalKey() {
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            const now = new Date();
+            // Get the number of 2-minute intervals passed since the Unix epoch
+            const timeInterval = Math.floor(now.getTime() / (2 * 60 * 1000)); // 2 minutes = 2 * 60 * 1000 ms
+
+            // Seed the random key generation with the timeInterval so that it's the same for everyone
             let key = '';
-            // Randomly generate the key (16 characters long)
             for (let i = 0; i < 16; i++) {
-                key += chars.charAt(Math.floor(Math.random() * chars.length));
+                // Create the random key based on the current timeInterval
+                key += chars.charAt((timeInterval + i) % chars.length);
             }
             return key;
         }
 
-        // This function will check and store the generated key
+        // Function to display the Lua file content with the key
         function displayLuaFile() {
-            // Check if a shared key is already stored in localStorage
-            let sharedKey = localStorage.getItem("sharedKey");
+            const universalKey = generateUniversalKey();
 
-            // If no key is stored, generate a random one and store it
-            if (!sharedKey) {
-                sharedKey = generateSharedKey();
-                localStorage.setItem("sharedKey", sharedKey); // Store the generated key for all users
-            }
+            // Format the Lua content as raw text with the universal key
+            const luaContent = `return {\n    "${universalKey}"\n}`;
 
-            // Create Lua content with the shared key
-            const luaContent = `return {\n    "${sharedKey}"\n}`;
-
-            // Display the Lua content
+            // Display the raw Lua content
             document.getElementById("luaDisplay").innerText = luaContent;
         }
 
-        // Call the function when the page loads
+        // Call displayLuaFile on page load and refresh it every 2 minutes
         window.onload = function() {
-            displayLuaFile();
+            displayLuaFile(); // Display Lua file content on page load
+            setInterval(displayLuaFile, 120000); // Refresh the Lua content every 2 minutes (120000 ms)
         }
     </script>
 </head>
