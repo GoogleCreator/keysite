@@ -4,42 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>
-        // Function to generate a random key
-        function generateRandomKey() {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let key = '';
-            for (let i = 0; i < 16; i++) {
-                key += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return key;
-        }
+        // Fixed key for everyone
+        const fixedKey = 'ABCDEF1234567890XYZ'; // This key can be anything you want.
 
-        // Function to display the raw Lua file content with the key
+        // Function to display the raw Lua file content with the fixed key
         function displayLuaFile() {
-            // Check if a key is saved in localStorage
-            let savedKey = localStorage.getItem("dailyKey");
-
-            // If no key is saved or it's time to refresh, generate a new key
-            const now = new Date();
-            const lastUpdated = localStorage.getItem("lastUpdated");
-
-            if (!savedKey || (now - new Date(lastUpdated)) > 120000) { // Check if it's been 2 minutes
-                savedKey = generateRandomKey();
-                localStorage.setItem("dailyKey", savedKey);
-                localStorage.setItem("lastUpdated", now.toString());
-            }
-
-            // Format the Lua content as raw text
-            const luaContent = `return {\n    "${savedKey}"\n}`;
+            // Format the Lua content as raw text with the fixed key
+            const luaContent = `return {\n    "${fixedKey}"\n}`;
 
             // Display the raw Lua content
             document.getElementById("luaDisplay").innerText = luaContent;
         }
 
-        // Call displayLuaFile on page load and refresh it every 2 minutes
+        // Call displayLuaFile on page load
         window.onload = function() {
             displayLuaFile(); // Display Lua file content on page load
-            setInterval(displayLuaFile, 120000); // Refresh the Lua content every 2 minutes
         }
     </script>
 </head>
