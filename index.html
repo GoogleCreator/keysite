@@ -20,14 +20,14 @@
             return key;
         }
 
-        // Function to display the Lua file content with the key
+        // Function to display the raw Lua file content with the key in a GitHub-like format
         function displayLuaFile() {
             const universalKey = generateUniversalKey();
 
-            // Format the Lua content as raw text with the universal key
+            // Format the Lua content as raw text with the universal key in the GitHub raw file style
             const luaContent = `return {\n    "${universalKey}"\n}`;
 
-            // Display the raw Lua content
+            // Display the raw Lua content (simulating a GitHub raw file)
             document.getElementById("luaDisplay").innerText = luaContent;
         }
 
@@ -38,7 +38,7 @@
         }
     </script>
 </head>
-<body>
+<body style="font-family: monospace; background-color: #f6f8fa; color: #24292f;">
     <pre id="luaDisplay">The Lua file content will be displayed here.</pre>
 </body>
 </html>
