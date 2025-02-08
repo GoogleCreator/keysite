@@ -4,37 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>
-        // Function to generate a random key
-        function generateRandomKey() {
+        // Generate the key from a shared resource, like localStorage or URL query param
+        function generateSharedKey() {
+            // Example of using a "random" but **consistent key**
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
             let key = '';
+            // Randomly generate the key (16 characters long)
             for (let i = 0; i < 16; i++) {
                 key += chars.charAt(Math.floor(Math.random() * chars.length));
             }
             return key;
         }
 
-        // Function to display the raw Lua file content with the key
+        // This function will check and store the generated key
         function displayLuaFile() {
-            // Check if a random key is already saved in localStorage
-            let savedKey = localStorage.getItem("sharedKey");
+            // Check if a shared key is already stored in localStorage
+            let sharedKey = localStorage.getItem("sharedKey");
 
-            // If no key is saved, generate and store it
-            if (!savedKey) {
-                savedKey = generateRandomKey(); // Generate a random key
-                localStorage.setItem("sharedKey", savedKey); // Store it in localStorage
+            // If no key is stored, generate a random one and store it
+            if (!sharedKey) {
+                sharedKey = generateSharedKey();
+                localStorage.setItem("sharedKey", sharedKey); // Store the generated key for all users
             }
 
-            // Format the Lua content as raw text with the saved (same) random key
-            const luaContent = `return {\n    "${savedKey}"\n}`;
+            // Create Lua content with the shared key
+            const luaContent = `return {\n    "${sharedKey}"\n}`;
 
-            // Display the raw Lua content
+            // Display the Lua content
             document.getElementById("luaDisplay").innerText = luaContent;
         }
 
-        // Call displayLuaFile on page load
+        // Call the function when the page loads
         window.onload = function() {
-            displayLuaFile(); // Display Lua file content on page load
+            displayLuaFile();
         }
     </script>
 </head>
