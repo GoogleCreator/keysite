@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Raw Lua File</title>
+    <script>
+        // Function to generate a random key
+        function generateRandomKey() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let key = '';
+            for (let i = 0; i < 16; i++) {
+                key += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return key;
+        }
+
+        // Function to display the raw Lua file content
+        function displayLuaFile() {
+            // Generate a random key
+            const randomKey = generateRandomKey();
+            
+            // Format the Lua content as raw text
+            const luaContent = `return {\n    "${randomKey}"\n}`;
+            
+            // Display the raw Lua content
+            document.getElementById("luaDisplay").innerText = luaContent;
+        }
+
+        // Call displayLuaFile on page load and refresh it every 5 minutes
+        window.onload = function() {
+            displayLuaFile(); // Display Lua file content on page load
+            setInterval(displayLuaFile, 300000); // Refresh the Lua content every 5 minutes
+        }
+    </script>
+</head>
+<body>
+    <h1>Display Raw Lua File</h1>
+    <pre id="luaDisplay">The Lua file content will be displayed here.</pre>
+</body>
+</html>
